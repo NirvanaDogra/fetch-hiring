@@ -1,12 +1,14 @@
 # App Screen shots
 
 ## Success Case
-![img_2.png](readme%20assets/saplshscreen.png)
-![img.png](readme%20assets/success.png)
+<img src="readme%20assets/saplshscreen.png" alt="Splash Screen" width="300" height="500" />
+<img src="readme%20assets/success.png" alt="Success Screen" width="300" height="500" />
 
 ## Error Cases
-![img_3.png](readme%20assets/network_error.png)
-![timeout.png](readme%20assets/timeout.png)
+
+<img src="readme%20assets/network_error.png" alt="Network error" width="300" height="500" />
+<img src="readme%20assets/timeout.png" alt="timeout error" width="300" height="500" />
+
 
 # Module Architecture Overview
 ![img_1.png](readme%20assets/module.png)
