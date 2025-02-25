@@ -7,7 +7,6 @@ import com.nirvana.feature_fetchhiring.repository.HiringRepository
 import com.nirvana.feature_fetchhiring.repository.HiringService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 import javax.inject.Inject
 
 
@@ -15,18 +14,17 @@ class FetchHiringUseCaseImpl @Inject constructor(
     private val hiringService: HiringService,
     private val hiringRepository: HiringRepository
 ) : FetchHiringUseCase {
+    companion object {
+        const val NOT_MODIFIED_CONFIRMATION = "HTTP 304 Not Modified"
+    }
     override suspend fun getPreprocessedHiringData(): List<BaseDTO> {
         return withContext(Dispatchers.IO) {
             try {
                 makeApiCall()
-            } catch (e: HttpException) {
-                if (e.code() == 304) {
+            } catch (e: Exception) {
+                if (e.message == NOT_MODIFIED_CONFIRMATION) {
                     val cachedData = hiringRepository.getAllHiringData()
-                    if (cachedData.isEmpty()) {
-                        makeApiCall()
-                    } else {
-                        preProcessHiringData(cachedData)
-                    }
+                    preProcessHiringData(cachedData)
                 } else {
                     throw e
                 }
@@ -34,18 +32,17 @@ class FetchHiringUseCaseImpl @Inject constructor(
         }
     }
 
+private suspend fun makeApiCall(): List<BaseDTO> {
+    val data = hiringService.getHiringData()
+    hiringRepository.insertHiringData(data)
+    return preProcessHiringData(data)
+}
 
-    private suspend fun makeApiCall(): List<BaseDTO> {
-        val data = hiringService.getHiringData()
-        hiringRepository.insertHiringData(data)
-        return preProcessHiringData(data)
+private fun preProcessHiringData(hiringData: List<HiringDTO>): List<BaseDTO> = hiringData
+    .filter { !it.name.isNullOrBlank() && it.name != "null" }
+    .groupBy { it.listId }
+    .toSortedMap()
+    .flatMap { (listId, items) ->
+        listOf(HeadingDTO(listId)) + items.sortedBy { it.id }
     }
-
-    private fun preProcessHiringData(hiringData: List<HiringDTO>): List<BaseDTO> = hiringData
-        .filter { !it.name.isNullOrBlank() && it.name != "null" }
-        .groupBy { it.listId }
-        .toSortedMap()
-        .flatMap { (listId, items) ->
-            listOf(HeadingDTO(listId)) + items.sortedBy { it.id }
-        }
 }
