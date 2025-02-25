@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="retry">Retry</string>
+    <string name="time_out">Request timed out</string>
+    <string name="time_our">Request timed out</string>
+    <string name="network_error">Network error</string>
+    <string name="something_went_wrong">Something went wrong</string>
+</resources>
