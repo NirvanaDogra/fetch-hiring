@@ -1,15 +1,22 @@
+# App Screen shots
+
+## Success Case
+![img_2.png](readme%20assets/saplshscreen.png)
+![img.png](readme%20assets/success.png)
+
+## Error Cases
+![img_3.png](readme%20assets/network_error.png)
+![timeout.png](readme%20assets/timeout.png)
+
 # Module Architecture Overview
-![img_1.png](readme%20assets/img_1.png)
+![img_1.png](readme%20assets/module.png)
 
 ## Fetch Hiring Feature - ViewModel and UseCase Implementation
 
 This module is designed to fetch and process hiring data for the application. It includes a ViewModel to manage the UI state, a UseCase for fetching and processing data, and dependency injection using Dagger Hilt for managing dependencies.
 
 ### Architecture Overview
-
 The code follows a clean architecture pattern, separating concerns between the ViewModel, UseCase, and repository. The goal is to keep each component focused on a single responsibility.
-
-
 
 #### Key Components:
 1. **FetchHiringViewModel**: A ViewModel responsible for handling the UI state (Loading, Success, Error) and interacting with the UseCase to fetch data.
